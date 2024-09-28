@@ -11,7 +11,7 @@ for _ in range(T):
         name, type = read().strip().split()
         wears[type] += 1
     
-    # 경우를 곱해줘야하므로 1로 초기화    
+    # 경우의 수를 곱해줘야하므로 1로 초기화    
     count = 1
     # 해당 옷을 입지 않는 경우도 있으므로 +1
     for w in wears: 
