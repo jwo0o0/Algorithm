@@ -1,4 +1,5 @@
 from collections import defaultdict
+import heapq
 
 def solution(N, road, K):
     # 마을 N개, 최대 배달 시간 K
@@ -12,7 +13,6 @@ def solution(N, road, K):
     visited = [False] * (N + 1)
     visited[1] = True
     distance = [0] * (N + 1)
-    # bfs 탐색
     queue = [1]
     while queue:
         current = queue.pop()
@@ -27,4 +27,27 @@ def solution(N, road, K):
     for k in distance[1:]:
         if k <= K: answer += 1
 
+    return answer
+
+# heapq로 구현
+def solution(N, road, K):
+    graph = [[] for _ in range(N + 1)]
+    distances = [float("inf")] * (N + 1)
+    distances[1] = 0
+    
+    for a, b, cost in road:
+        graph[a].append((b, cost))
+        graph[b].append((a, cost))
+        
+    heap = []
+    heapq.heappush(heap, (0, 1))
+    while heap:
+        dist, node = heapq.heappop(heap)
+        for next_node, next_dist in graph[node]:
+            cost = dist + next_dist
+            if cost < distances[next_node]:
+                distances[next_node] = cost
+                heapq.heappush(heap, (cost, next_node))
+    
+    answer = sum(1 for dist in distances if dist <= K)
     return answer
